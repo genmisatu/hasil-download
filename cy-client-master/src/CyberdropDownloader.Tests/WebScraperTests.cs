@@ -1,0 +1,44 @@
+﻿using CyberdropDownloader.Core;
+using CyberdropDownloader.Core.DataModels;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace CyberdropDownloader.Tests
+{
+
+	public class WebScraperTests
+	{
+		private WebScraper _webScraper;
+
+		[OneTimeSetUp]
+		public async Task OneTimeSetUp()
+		{
+			_webScraper = new WebScraper();
+			await _webScraper.LoadAlbumAsync("https://cyberdrop.me/a/0ezUfnys");
+		}
+
+		[Test, Order(1)]
+		public void FetchAlbumTitle()
+		{
+			string result = _webScraper.Album.Title;
+
+			Assert.IsTrue(string.Equals("Cy test", result));
+		}
+
+		[Test, Order(2)]
+		public void FetchAlbumSize()
+		{
+			double result = _webScraper.Album.Size;
+			Assert.AreEqual("69730304", result.ToString());
+		}
+
+		[Test, Order(3)]
+		public void FetchAlbumFiles()
+		{
+			Queue<AlbumFile> result = _webScraper.Album.Files;
+
+			Assert.IsTrue(result.Count == 12);
+		}
+	}
+}
